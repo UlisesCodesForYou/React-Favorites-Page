@@ -5,7 +5,7 @@ let globalState = {} // These global variables will SHARE DATA!
 let listeners = [];
 let actions = {};
 
-export const useStore = () => { // THIS USESTORE WILL SHARE THE DATA WHAT WILL BE PASSED UP TO THE GLOBAL VARIABLES!
+export const useStore = (shouldListen = true) => { // THIS USESTORE WILL SHARE THE DATA WHAT WILL BE PASSED UP TO THE GLOBAL VARIABLES!
     const setState = useState(globalState)[1];
 
     const dispatch = (actionIdentifier, payload) => {
@@ -18,13 +18,20 @@ export const useStore = () => { // THIS USESTORE WILL SHARE THE DATA WHAT WILL B
     }
 
     useEffect(() => {
-        listeners.push(setState)
+        if (shouldListen) {
+            listeners.push(setState)
 
-        return () => {
-            listeners = listeners.filter(li => li !== setState)
         }
 
-    }, [setState])
+
+        return () => {
+            if (shouldListen) {
+                listeners = listeners.filter(li => li !== setState)
+            }
+
+        }
+
+    }, [setState, shouldListen])
 
     return [globalState, dispatch]
 };
