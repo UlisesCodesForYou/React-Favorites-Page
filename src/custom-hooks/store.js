@@ -1,11 +1,11 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 
 
-let globalState = {} // These global variables will SHARE LOGIC AND DATA!
+let globalState = {} // These global variables will SHARE DATA!
 let listeners = [];
 let actions = {};
 
-export const useStore = () => {
+export const useStore = () => { // THIS USESTORE WILL SHARE THE DATA WHAT WILL BE PASSED UP TO THE GLOBAL VARIABLES!
     const setState = useState(globalState)[1];
 
     const dispatch = (actionIdentifier, payload) => {
